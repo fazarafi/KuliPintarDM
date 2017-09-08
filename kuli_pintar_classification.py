@@ -3,8 +3,7 @@ from tweet import Tweet
 import time 
 
 class TweetClassifier(object):
-	def __init__(self, stopwords=None, classifier=None):
-		self.stopwords = stopwords or set(sw.words('english'))
+	def __init__(self, classifier=None):
 		self.classifier = classifier
 
 	def get_classes():
@@ -28,6 +27,7 @@ class TweetClassifier(object):
 				keluhan_tweets.append(tweet)
 		return keluhan_tweets
 
+
 train = [
 	('Bandung tidak enak, sering macet','keluhan'),
 	('Saya tidak suka dengan walikota Bandung','keluhan'),
@@ -37,10 +37,10 @@ train = [
 	('Walikota Bandung tidak profesional','keluhan'),
 	('Harga barang di Bandung sangat mahal','keluhan'),
 ]
-test = ['barang ramah','Walikota tidak baik','pulang lancar dari kampus']
+test = ['barang ramah','Walikota tidak baik','Jakarta sejuk']
 
-tweet_classifier = TweetClassifier(train, 'indonesian')
-print 'Processing Time:',tweet_classifier.train_data(train),'seconds'
+tweet_classifier = TweetClassifier()
+print('Processing Time:',tweet_classifier.train_data(train),'seconds')
 print('++++++++++++++++++++++++++++')
 print("Tweet Keluhan Terdiri dari :")
 keluhan_tweets = tweet_classifier.test_data(test)
