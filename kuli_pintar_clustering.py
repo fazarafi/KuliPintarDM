@@ -1,10 +1,7 @@
 from __future__ import print_function
 from sklearn.feature_extraction.text import *
-from sklearn.cluster import KMeans, MiniBatchKMeans
-from sklearn.metrics.pairwise import pairwise_distances_argmin
-from sklearn.datasets.samples_generator import make_blobs
+from sklearn.cluster import MiniBatchKMeans
 
-import matplotlib.pyplot as plt
 import collections
 import time
 
@@ -61,7 +58,6 @@ class TweetClustering(object):
 		model.fit(X)
 		self.processing_time = time.time()-start
 		self.set_model(model)
-
 		clusters = collections.deque(maxlen=self.cluster_num)
 		for idx in range(self.cluster_num):
 			clusters.append([])
@@ -77,16 +73,12 @@ class TweetClustering(object):
 				ttw[i].append(terms[ind])
 		
 		self.top_three_words = ttw    
-
 		for tweet in dataset:
 			Y = tfidf_vectorizer.transform([tweet])
 			prediction = model.predict(Y)
 			tweet_cluster_array = clusters[prediction[0]]
 			clusters[prediction[0]].append(tweet)
 		return clusters
-
-	def draw_graph(self, object):
-		return object
 
 dataset = [
 	'Bandung tidak enak, sering macet',
@@ -106,7 +98,11 @@ dataset = [
 ]
 
 tweet_clustering = TweetClustering(dataset,5)
-
+print("##############################################")
+print("--------------Tweet Classifier----------------")
+print("~~~~~~~~~@GEMASTIK: KuliPintar Team~~~~~~~~~~~")
+print("----------------------------------------------")
+print("Processing Time:",tweet_clustering.get_processing_time(),'seconds')
 clusters = tweet_clustering.cluster_data()
 for cluster_id in range(tweet_clustering.cluster_num):
 	print('[',cluster_id,']')
@@ -115,5 +111,4 @@ for cluster_id in range(tweet_clustering.cluster_num):
 	for word in tweet_clustering.get_top_three_words()[cluster_id]:
 		print('>',word)
 	print()
-	# print(clusters[cluster])
-
+	
