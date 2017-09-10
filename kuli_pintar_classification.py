@@ -1,4 +1,5 @@
 from textblob.classifiers import NaiveBayesClassifier
+from sklearn.naive_bayes import GaussianNB
 from tweet import Tweet
 import time 
 
@@ -15,6 +16,8 @@ class TweetClassifier(object):
 	def train_data(self, train):
 		start = time.time()
 		cl = NaiveBayesClassifier(train)
+		clf = GaussianNB()
+		
 		end = time.time()
 		self.classifier = cl
 		return end-start
