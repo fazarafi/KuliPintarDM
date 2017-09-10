@@ -1,6 +1,7 @@
 from __future__ import print_function
 from sklearn.feature_extraction.text import *
 from sklearn.cluster import MiniBatchKMeans
+from data_service.mongo_accessor import TweetDataMongoAccessorSingleton
 
 import collections
 import time
@@ -71,8 +72,8 @@ class TweetClustering(object):
 		for i in range(self.cluster_num):
 			for ind in order_centroids[i, :3]:
 				ttw[i].append(terms[ind])
-		
-		self.top_three_words = ttw    
+
+		self.top_three_words = ttw
 		for tweet in dataset:
 			Y = tfidf_vectorizer.transform([tweet])
 			prediction = model.predict(Y)
@@ -81,21 +82,28 @@ class TweetClustering(object):
 		return clusters
 
 dataset = [
-	'Bandung tidak enak, sering macet',
-	'Saya tidak suka dengan walikota Bandung',
-	'walikota Bandung sombong',
-	'Kemarin, saya terkena banjir di Bandung',
-	'Walikota Bandung tidak profesional',
-	'Harga barang di Bandung sangat mahal',
-	'Aku suka indomie goreng rasa rendang.',
-	'Jakarta terkena musibah banjir bandang.',
-	'Indonesia juara dunia dalam cabang olahraga Tenis.',
-	'Jika kamu mampu untuk mengubah dunia, maka harus banyak persiapan.',
-	'Halo! siapa nama anda.',
-	'Kucing suka makan tikus.',
-	'Kebunku dipenuhi tanaman kacang.',
-	'Bandung memiliki suhu yang dingin.'
+	# 'Bandung tidak enak, sering macet',
+	# 'Saya tidak suka dengan walikota Bandung',
+	# 'walikota Bandung sombong',
+	# 'Kemarin, saya terkena banjir di Bandung',
+	# 'Walikota Bandung tidak profesional',
+	# 'Harga barang di Bandung sangat mahal',
+	# 'Aku suka indomie goreng rasa rendang.',
+	# 'Jakarta terkena musibah banjir bandang.',
+	# 'Indonesia juara dunia dalam cabang olahraga Tenis.',
+	# 'Jika kamu mampu untuk mengubah dunia, maka harus banyak persiapan.',
+	# 'Halo! siapa nama anda.',
+	# 'Kucing suka makan tikus.',
+	# 'Kebunku dipenuhi tanaman kacang.',
+	# 'Bandung memiliki suhu yang dingin.'
 ]
+
+tweet_data = TweetDataMongoAccessorSingleton.getInstance()
+tweet_data_coll = tweet_data.coll
+cursor = tweet_data_coll.find()
+for tweet in cursor:
+   dataset.append(tweet["message"])
+
 
 tweet_clustering = TweetClustering(dataset,5)
 print("##############################################")
@@ -111,4 +119,3 @@ for cluster_id in range(tweet_clustering.cluster_num):
 	for word in tweet_clustering.get_top_three_words()[cluster_id]:
 		print('>',word)
 	print()
-	

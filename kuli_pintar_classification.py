@@ -1,7 +1,7 @@
 from textblob.classifiers import NaiveBayesClassifier
 from sklearn.naive_bayes import GaussianNB
 from tweet import Tweet
-import time 
+import time
 
 class TweetClassifier(object):
 	def __init__(self, classifier=None):
@@ -17,7 +17,7 @@ class TweetClassifier(object):
 		start = time.time()
 		cl = NaiveBayesClassifier(train)
 		clf = GaussianNB()
-		
+
 		end = time.time()
 		self.classifier = cl
 		return end-start
@@ -42,10 +42,15 @@ train = [
 ]
 test = ['barang ramah','Walikota tidak baik','Jakarta sejuk']
 
-tweet_classifier = TweetClassifier()
-print('Processing Time:',tweet_classifier.train_data(train),'seconds')
-print('++++++++++++++++++++++++++++')
-print("Tweet Keluhan Terdiri dari :")
-keluhan_tweets = tweet_classifier.test_data(test)
-for keluhan in keluhan_tweets:
-	print(keluhan)
+text = ('aduhhhhhhhhh','keluhan')
+train.append(text)
+for t in train:
+	print (t)
+
+# tweet_classifier = TweetClassifier()
+# print('Processing Time:',tweet_classifier.train_data(train),'seconds')
+# print('++++++++++++++++++++++++++++')
+# print("Tweet Keluhan Terdiri dari :")
+# keluhan_tweets = tweet_classifier.test_data(test)
+# for keluhan in keluhan_tweets:
+# 	print(keluhan)
